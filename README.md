@@ -1,162 +1,151 @@
-# n8n-free-templates
-# 🚀 200 Ready-to-Import n8n Workflows  
+# C# N8n Workflow Generator
 
-_AI • Vector DB • LLM • DevOps • Finance • IoT • and more_
+This is a C# console application designed to generate n8n workflow JSON, primarily focusing on the Retrieval Augmented Generation (RAG) pattern. It utilizes Large Language Models (LLMs) through configurable providers like Google Gemini or a local Ollama instance.
 
-Free n8n templates to download
+## Features
 
-!!! Some of the templates are incomplete, you can be a contributor by completing it.
-<p align="center">
-  <img src="https://img.shields.io/badge/Templates-200-6A5ACD?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Categories-20%2B-008080?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Tech_Mix-Pinecone%2C_Weaviate%2C_Supabase%2C_Redis%2C_OpenAI%2C_Claude%2C_Cohere-FF69B4?style=for-the-badge" />
-</p>
+*   Generates n8n workflow JSON based on user's textual descriptions.
+*   Supports AI-driven generation via:
+    *   Google Gemini API
+    *   Local LLMs through Ollama (e.g., Qwen2, Llama3, Mistral)
+*   Configuration managed via `appsettings.json` for LLM providers, API keys, and model names.
+*   Includes structural validation for the generated n8n JSON.
+*   Command-line interface for easy interaction.
 
-> **TL;DR** – Import any JSON workflow below into n8n and hit **Activate**.  
-> Each one ships with docs, guard‑rails, error alerts, and (when helpful) a full **RAG** stack.
+## Requirements
 
----
+*   **.NET 8 SDK** (or the version specified in `N8nWorkflowGenerator.csproj`).
+*   **For Google Gemini:**
+    *   A valid Google Gemini API Key.
+    *   Ensure the Gemini API is enabled for your Google Cloud project.
+*   **For Ollama:**
+    *   Ollama installed and running. (Download from [ollama.com](https://ollama.com/))
+    *   The desired model pulled via Ollama CLI (e.g., `ollama pull qwen2`, `ollama pull llama3`).
 
-## 🗺️ Categories & Counts
+## Setup and Configuration
 
-| Category | # Templates |
-|----------|-------------|
-| AI & Machine Learning | 10 |
-| Email Automation | 10 |
-| Social Media | 10 |
-| Finance & Accounting | 10 |
-| E‑Commerce & Retail | 10 |
-| Data Collection & Analytics | 10 |
-| Education | 5 |
-| HR & Recruitment | 5 |
-| Healthcare & Wellness | 5 |
-| DevOps & Development | 5 |
-| Productivity | 10 |
-| Government & NGO | 5 |
-| Creative & Content | 5 |
-| Real Estate | 10 |
-| Legal‑Tech | 10 |
-| Gaming | 10 |
-| Travel | 10 |
-| Energy | 10 |
-| Manufacturing | 10 |
-| Agriculture | 10 |
-| Media | 10 |
-| IoT | 10 |
-| Automotive | 10 |
+1.  **Clone the Repository (if applicable) or ensure you have the source files.**
+    ```bash
+    # git clone <repository_url>
+    # cd <project_directory>
+    ```
 
-**Total = 200 JSON workflows**
+2.  **Configure `appsettings.json`:**
+    Create or update the `appsettings.json` file in the project's output directory (e.g., `bin/Debug/net8.0`). A template is provided in the source.
 
----
+    ```json
+    {
+      "LLM": {
+        "Provider": "Ollama", // Choose "Ollama" or "Gemini"
+        "Gemini": {
+          "ApiKey": "YOUR_GEMINI_API_KEY_HERE", // Replace with your actual Gemini API Key
+          "Model": "gemini-1.5-flash-latest" // Or other compatible Gemini model
+        },
+        "Ollama": {
+          "BaseUrl": "http://localhost:11434", // Default Ollama API URL
+          "Model": "qwen2" // Replace with your desired Ollama model (e.g., llama3, mistral)
+        }
+      }
+    }
+    ```
 
-## 🔧 Tech Stack Matrix
+    *   **`LLM.Provider`**: Set to `"Gemini"` to use Google Gemini or `"Ollama"` to use a local Ollama instance.
+    *   **`LLM.Gemini.ApiKey`**: Your Google Gemini API key. **Important:** Do not commit your actual API key to version control if this is a public repository. Use user secrets or environment variables for better security in such cases.
+    *   **`LLM.Gemini.Model`**: The specific Gemini model you want to use (e.g., `gemini-1.5-flash-latest`, `gemini-pro`).
+    *   **`LLM.Ollama.BaseUrl`**: The base URL for your Ollama API. Defaults to `http://localhost:11434`.
+    *   **`LLM.Ollama.Model`**: The name of the model you have pulled and want to use with Ollama (e.g., `qwen2`, `llama3`).
 
-| Layer | Options Used |
-|-------|--------------|
-| **Vector Stores** | Pinecone • Weaviate • Supabase Vector • Redis |
-| **Embeddings** | OpenAI • Cohere • Hugging Face |
-| **LLM Chat** | OpenAI GPT‑4(o) • Anthropic Claude 3 • Hugging Face Inference |
-| **Memory** | Zep Memory • Window Buffer |
-| **Extras** | Slack alerts • Google Sheets logs • OCR • HTTP polling |
+3.  **Development Overrides (Optional):**
+    You can create an `appsettings.Development.json` file to override settings for local development. This file is typically not committed to source control if it contains sensitive data.
 
----
+## How to Run
 
-## 📂 Folder Layout
-
-```
-<category>/
-  *.json         # workflow files
-  README.md      # tech mix per file
-
-MASTER_README.md # ← you are here
-```
-
----
-
-## 🚀 Quick Start
+Navigate to the project's root directory (where `N8nWorkflowGenerator.csproj` is located) in your terminal and run:
 
 ```bash
-git clone <https://github.com/wassupjay/n8n-free-templates.git>
-# then in n8n:
-# Settings ▸ Import Workflows ▸ select any JSON
-# Open each node ▸ Credentials ▸ choose or create your account
-# Save & Activate ✅
+dotnet run
 ```
 
----
+The application will start, load the configuration, and prompt you for a description of the n8n workflow you want to create.
 
-## 🤖 N8n Workflow Generator (Experimental)
+## Example Usage
 
-This directory also includes an experimental Python-based command-line tool to generate basic n8n workflow JSON, primarily focusing on the common Retrieval Augmented Generation (RAG) pattern observed in many of the templates.
-
-**How it Works (Conceptual):**
-
-1.  The user provides a textual description of the desired n8n agent functionality via the command line.
-2.  The tool's `workflow_generator.py` script parses this description for simple keywords (e.g., preferred services) and constructs a detailed prompt.
-3.  Currently, instead of sending this prompt to a live Large Language Model (LLM), it uses this prompt to populate a **hardcoded n8n workflow template** that mimics what an LLM might generate. This allows for testing the structure and validation.
-4.  The generated JSON is then validated by `validator.py` for basic structural integrity and adherence to n8n conventions.
-5.  The user is shown the (simulated) generated JSON and can save it to a file.
-
-**Requirements:**
-
-*   Python 3.x
-
-**How to Run:**
-
-1.  Navigate to the root directory of this repository in your terminal.
-2.  Run the application using:
+1.  **Run the application:**
     ```bash
-    python app.py
+    dotnet run
     ```
 
-**Example Usage:**
-
-1.  Run the script: `python app.py`
-2.  When prompted, enter a description for your workflow. For example:
+2.  **Application Output & User Input:**
     ```
-    Please describe the n8n agent functionality you want to create: Create an agent to analyze customer feedback received via a webhook. It should use OpenAI for embeddings and chat, Supabase for the vector store, and log results to Google Sheets. The agent should be named Customer Feedback Analyzer.
-    ```
-3.  The script will then output the (currently template-based) generated n8n JSON. If valid, it will look something like this (output from `workflow_generator.py` is printed first, then the validated JSON):
+    Using Ollama LLM Service (Model: qwen2, URL: http://localhost:11434).
 
+    Welcome to the N8n Workflow Generator!
+    This tool will help you generate an n8n workflow JSON based on your description.
+    It primarily focuses on creating a Retrieval Augmented Generation (RAG) pattern.
+    ----------------------------------------------------------------------------
+    Please describe the n8n agent functionality you want to create: Create an n8n workflow named 'Support Ticket Analyzer' that uses Cohere for embeddings, Supabase for vector storage, and the configured Ollama model (qwen2) for chat. It should log to Google Sheets and send Slack alerts on error.
     ```
-    Generated LLM Prompt (Sample):
-    You are an expert n8n workflow generator... [rest of the generated prompt] ...
 
-    Successfully generated and validated the workflow!
+3.  **LLM Prompt (Printed by the application for review):**
+    ```
+    --- Constructed LLM Prompt (C#) ---
+    Prompt for 'Support Ticket Analyzer' constructed. Length: XXXX chars.
+    User Goal: Create an n8n workflow named 'Support Ticket Analyzer' that uses Cohere for embeddings, Supabase for vector storage, and the configured Ollama model (qwen2) for chat. It should log to Google Sheets and send Slack alerts on error.
+    LLM Provider for Chat: Ollama, Model: qwen2
+    Embedding Service: Cohere, Vector Store: Supabase
+    --- End of LLM Prompt Snippet (C#) ---
+    ```
+    *(Note: The full detailed prompt, as shown in previous Python examples, is constructed but only a summary is printed to the console by default in the C# version to keep output concise. The actual detailed prompt sent to the LLM is much longer and guides the LLM on JSON structure, node types, connections, etc.)*
+
+
+4.  **Output (if successful):**
+    ```
+    Attempting to generate workflow... (This might take a moment depending on the LLM response time)
+
+    Validating generated workflow...
+
+    Workflow generated and validated successfully!
+
+    --- Generated Workflow JSON ---
     {
-        "name": "Customer Feedback Analyzer",
-        "nodes": [
-            // ... numerous nodes for webhook, text splitter, embeddings, vector store, agent, etc. ...
-            // ... (details depend on the hardcoded template in workflow_generator.py) ...
-        ],
-        "connections": {
-            // ... connections between all the nodes ...
-        },
-        "settings": {
-            "executionOrder": "v1"
-        },
-        "triggerCount": 1
+      "name": "Support Ticket Analyzer",
+      "nodes": [
+        // ... array of nodes generated by the LLM ...
+      ],
+      "connections": {
+        // ... connections generated by the LLM ...
+      },
+      "settings": {
+        "executionOrder": "v1"
+      },
+      "triggerCount": 1,
+      "versionId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" // Example VersionId
     }
+    --- End of Workflow JSON ---
+
     Save workflow to a file? (y/n): y
-    Enter filename (default: customer-feedback-analyzer.json): customer-feedback-analyzer.json
-    Workflow saved to customer-feedback-analyzer.json
+    Enter filename (default: support-ticket-analyzer.json):
+    Workflow saved to C:\path\to\project\bin\Debug\net8.0\support-ticket-analyzer.json
     ```
 
-**Current Limitations & Future Scope:**
+## Project Structure Overview
 
-*   **LLM Simulation:** The core generation logic currently uses a hardcoded template string within `workflow_generator.py` that is populated based on the extracted details. A future step would be to integrate a real LLM.
-*   **Basic Prompt Parsing:** User prompt parsing in `extract_details_from_prompt` is very basic and keyword-driven. More sophisticated NLP would be needed for nuanced requests.
-*   **Limited Customization:** The generation is heavily tied to the "Standard RAG Pattern."
-*   **Basic Validation:** The `validator.py` performs essential structural checks but is not a complete n8n validator.
+*   `Program.cs`: Main entry point for the console application. Orchestrates the workflow.
+*   `AppSettings.cs`: Defines C# classes for mapping `appsettings.json` configuration.
+*   `ILlmService.cs`: Interface for LLM service abstraction.
+*   `GeminiLlmService.cs`: Implementation of `ILlmService` for Google Gemini.
+*   `OllamaLlmService.cs`: Implementation of `ILlmService` for Ollama.
+*   `WorkflowGenerator.cs`: Handles prompt construction and orchestrates LLM interaction.
+*   `UserInputParser.cs`: Parses the user's initial textual description.
+*   `N8nWorkflowModels.cs`: Defines C# classes representing the n8n workflow structure.
+*   `WorkflowValidator.cs`: Validates the structure of the JSON generated by the LLM.
+*   `Helpers.cs`: Utility functions (e.g., Slugify, GenerateUuid).
+*   `appsettings.json`: Configuration file for LLM providers, API keys, etc.
 
-This tool provides a foundational framework for exploring programmatic n8n workflow generation.
+## Troubleshooting & Notes
 
-## 🤝 Contributing
-You can contribute by adding more templates!
-!!! Some of the templates are incomplete, you can be a contributor by completing it!!!
-PRs & issues welcome!  
-Request new templates, improve prompts, or add integrations.
-Collabs welcome!
----
-
-_Made with ❤️ by Jay — “Automate everything, then automate the automation.”_
+*   **Ollama Users:** Ensure your Ollama server is running and accessible at the `BaseUrl` specified in `appsettings.json`. Make sure the model specified in `Ollama.Model` has been pulled (e.g., `ollama pull qwen2`).
+*   **Gemini Users:** Double-check your API key and ensure the Gemini API is enabled in your Google Cloud project. The model name should also be accurate.
+*   **LLM Output:** The quality of the generated n8n JSON heavily depends on the capability of the chosen LLM and the detail of the prompt. The prompt constructed by this tool is designed to be comprehensive for RAG workflows.
+*   **Rate Limits:** Be mindful of API rate limits if using cloud-based LLMs like Gemini.
+```
